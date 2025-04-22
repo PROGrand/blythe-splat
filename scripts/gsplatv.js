@@ -1,0 +1,27 @@
+import "./modulepreload-polyfill.js";
+/* empty css        */
+import { Y as g, x as p, W as f, E as w, o as v, u as y, J as m } from "./gsplatjs.js";
+const s = document.getElementById("canvas"), d = document.getElementById("progress-dialog"), u = document.getElementById("progress-indicator"), a = new g(s);
+a.addProgram(new p(a));
+const n = new f();
+a.backgroundColor = new w(0, 0, 0, 0);
+const t = new v(), l = new y(t, s);
+let i = !1;
+async function E(o) {
+  i || (i = !0, o.name.endsWith(".splatv") && (n.reset(), d.showModal(), await m.LoadFromFileAsync(o, n, t, (r) => {
+    u.value = r * 100;
+  }), d.close()), i = !1);
+}
+async function h() {
+  const o = document.getElementById("splat_url").value;
+  await m.LoadAsync(o, n, t, (e) => u.value = e * 100), l.setCameraTarget(t.position.add(t.forward.multiply(5))), d.close();
+  const r = () => {
+    a.setSize(s.clientWidth, s.clientHeight);
+  }, c = () => {
+    l.update(), a.render(n, t), requestAnimationFrame(c);
+  };
+  r(), window.addEventListener("resize", r), requestAnimationFrame(c), document.addEventListener("drop", (e) => {
+    e.preventDefault(), e.stopPropagation(), e.dataTransfer != null && (n.reset(), E(e.dataTransfer.files[0]));
+  });
+}
+h();
